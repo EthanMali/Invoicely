@@ -1,0 +1,248 @@
+/* ====== GENERAL STYLING ====== */
+body {
+    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ====== CONTAINER & LAYOUT ====== */
+.container-fluid {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Make both sides take up exactly 50% */
+.col-md-6 {
+    flex: 1;
+    padding: 20px;
+}
+
+/* ====== INVOICE FORM ====== */
+.invoice-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 600px; /* Slightly wider for better spacing */
+}
+
+/* Form Labels */
+.invoice-form label {
+    font-weight: 600;
+    margin-top: 10px;
+    color: #333;
+}
+
+/* Form Inputs */
+.invoice-form input,
+.invoice-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+/* Textarea */
+.invoice-form textarea {
+    resize: none;
+    height: 80px;
+}
+
+/* Form Buttons */
+.invoice-form button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+#addItem {
+    background-color: #29435f;
+    color: white;
+}
+
+#addItem:hover {
+    background-color: #0056b3;
+}
+
+#generateInvoice {
+    background-color: #29435f;
+    color: white;
+}
+
+#generateInvoice:hover {
+    background-color: #1e7e34;
+}
+
+/* ====== INVOICE PREVIEW (RIGHT SIDE) ====== */
+.invoice-wrapper {
+    width: 45%;
+    height: 95vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #686868;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    margin-right: 120px;
+}
+
+/* A4 Paper Layout */
+.invoice-preview {
+    width: 168mm; /* Scaled down from 210mm */
+    height: 237mm; /* Scaled down from 297mm */
+    background: white;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transform-origin: center;
+    transition: transform 0.2s ease-in-out;
+    transform: scale(0.7);
+}
+
+/* Invoice Header */
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #29435f;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.invoice-header h2 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #29435f;
+}
+
+/* Invoice Logo */
+.invoice-logo img {
+    max-width: 80px;
+    max-height: 40px;
+}
+
+/* Invoice Table */
+.invoice-items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.invoice-items th, .invoice-items td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.invoice-items th {
+    background-color: #29435f;
+    color: white;
+    font-weight: bold;
+}
+
+/* Invoice Total */
+.total {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: right;
+    margin-top: 20px;
+    color: #105a21;
+}
+
+/* ====== RESPONSIVE FIXES ====== */
+@media (max-width: 1200px) {
+    .invoice-preview {
+        transform: scale(0.7);
+    }
+}
+
+@media (max-width: 992px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .col-md-6 {
+        width: 100%;
+        max-width: 90%;
+    }
+
+    .invoice-wrapper {
+        height: auto;
+        padding: 10px;
+    }
+
+    .invoice-preview {
+        transform: scale(0.6);
+    }
+}
+
+
+/* PDF Download Animation */
+.pdf-animation {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 20px 40px;
+    border-radius: 10px;
+    display: none; /* Hidden by default */
+    text-align: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    width: 30%;
+}
+
+/* Checkmark Animation */
+.checkmark {
+    font-size: 40px;
+    color: #28a745;
+    font-weight: bold;
+    opacity: 0;
+    transform: scale(0);
+    animation: popIn 0.5s ease-out forwards;
+}
+
+/* Pop-in Animation */
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+

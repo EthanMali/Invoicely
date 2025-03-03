@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="icon" href="invoicely-favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row w-100 h-100">
+            <!-- Left: Form Section -->
+            <div class="col-md-6 p-4">
+                <!-- Back to Home Button -->
+            <a href="index.html" class="btn btn-outline-secondary mb-3">← Back to Home</a>
+
+                <div class="invoice-form bg-white p-4 shadow rounded">
+                    <h2 class="mb-3 text-center">Invoice Generator</h2>
+    
+                    <div class="accordion" id="invoiceAccordion">
+                        <!-- Company Details -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#companyDetails">
+                                    Company Details
+                                </button>
+                            </h2>
+                            <div id="companyDetails" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div class="mb-3">
+                                        <label>Company Name:</label>
+                                        <input type="text" id="companyName" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Address:</label>
+                                        <input type="text" id="companyAddress" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Email:</label>
+                                        <input type="email" id="companyEmail" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Phone:</label>
+                                        <input type="tel" id="companyPhone" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Upload Logo:</label>
+                                        <input type="file" id="companyLogo" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Client Details -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#clientDetails">
+                                    Client Details
+                                </button>
+                            </h2>
+                            <div id="clientDetails" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div class="mb-3">
+                                        <label>Client Name:</label>
+                                        <input type="text" id="clientName" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Address:</label>
+                                        <input type="text" id="clientAddress" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Invoice Details -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#invoiceDetails">
+                                    Invoice Details
+                                </button>
+                            </h2>
+                            <div id="invoiceDetails" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div class="mb-3">
+                                        <label>Invoice Number:</label>
+                                        <input type="text" id="invoiceNumber" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Invoice Date:</label>
+                                        <input type="date" id="invoiceDate" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Due Date:</label>
+                                        <input type="date" id="dueDate" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Items Section -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#itemsSection">
+                                    Invoice Items
+                                </button>
+                            </h2>
+                            <div id="itemsSection" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div id="itemsList"></div>
+                                    <button id="addItem" class="btn btn-primary w-100">+ Add Item</button>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Notes Section -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#notesSection">
+                                    Additional Notes
+                                </button>
+                            </h2>
+                            <div id="notesSection" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <label>Notes:</label>
+                                    <textarea id="notes" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Visibility Options Section -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#visibilityOptions">
+                                    Section Visibility
+                                </button>
+                            </h2>
+                            <div id="visibilityOptions" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <label><input type="checkbox" id="toggleCompanySection" checked> Show Company Details</label><br>
+                                    <label><input type="checkbox" id="toggleClientSection" checked> Show Client Details</label><br>
+                                    <label><input type="checkbox" id="toggleInvoiceDetailsSection" checked> Show Invoice Details</label><br>
+                                    <label><input type="checkbox" id="toggleItemsSection" checked> Show Items</label><br>
+                                    <label><input type="checkbox" id="toggleNotesSection" checked> Show Notes</label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <button id="generateInvoice" class="btn btn-success mt-3 w-100">Generate PDF</button>
+                </div>
+            </div>
+    
+            <!-- Invoice Preview -->
+            <div class="invoice-wrapper ">
+                <div class="invoice-preview shadow-sm p-4 bg-white rounded" id="pdfPreview">
+
+                    <!-- Company Section -->
+                    <div id="companySectionPreview">
+                        <div class="invoice-header d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2 id="previewCompanyName">Company Name</h2>
+                                <p id="previewCompanyAddress">Company Address</p>
+                                <p id="previewCompanyEmail">Email: company@example.com</p>
+                                <p id="previewCompanyPhone">Phone: 123-456-7890</p>
+                            </div>
+                            <img id="previewInvoiceLogo" src="" alt="Logo" class="invoice-logo">
+                        </div>
+                        <hr>
+                    </div>
+
+                    <!-- Client Section -->
+                    <div id="clientSectionPreview">
+                        <h4>Bill To:</h4>
+                        <p id="previewClientName">Client Name</p>
+                        <p id="previewClientAddress">Client Address</p>
+                        <hr>
+                    </div>
+
+                    <!-- Invoice Details Section -->
+                    <div id="invoiceDetailsSectionPreview">
+                        <p id="previewInvoiceNumber"><strong>Invoice #:</strong> 0001</p>
+                        <p id="previewInvoiceDate"><strong>Invoice Date:</strong> MM/DD/YYYY</p>
+                        <p id="previewDueDate"><strong>Due Date:</strong> MM/DD/YYYY</p>
+                        <hr>
+                    </div>
+
+                    <!-- Items Section -->
+                    <div id="itemsSectionPreview">
+                        <table class="invoice-items table table-bordered mt-3">
+                            <thead>
+                                <tr><th>Description</th><th>Quantity</th><th>Price</th><th>Total</th></tr>
+                            </thead>
+                            <tbody id="previewItems"></tbody>
+                        </table>
+                        <h3 class="total text-end mt-3" id="previewTotal">Total: $0.00</h3>
+                        <hr>
+                    </div>
+
+                    <!-- Notes Section -->
+                    <div id="notesSectionPreview">
+                        <p id="previewNotes"><strong>Notes:</strong> None</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+    <!-- PDF Download Success Animation -->
+    <div id="pdfAnimation" class="pdf-animation">
+        <div class="checkmark">
+            ✔
+        </div>
+        <p>Invoice Downloaded!</p>
+    </div>
+
+
+    
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>
